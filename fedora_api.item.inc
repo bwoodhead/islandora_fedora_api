@@ -34,7 +34,7 @@ class FedoraItem extends PropertyObject {
       $this->client =& FedoraItem::$instantiated_pids[$pid]->client;
       $this->objectProfile =& FedoraItem::$instantiated_pids[$pid]->objectProfile;
       $this->_datastreams =& FedoraItem::$instantiated_pids[$pid]->_datastreams;
-      $datastreams_doc =& FedoraItem::$instantiated_pids[$pid]->datastreams_list;
+      //$datastreams_doc =& FedoraItem::$instantiated_pids[$pid]->datastreams_list;
     }
     else { 
       $this->_refreshObjectProfile();
@@ -70,6 +70,41 @@ class FedoraItem extends PropertyObject {
   }
   
   /**
+   * Add a relationship string to this object's RELS-EXT.
+   * does not support rels-int yet.
+   * @param string $relationship
+   * @param <type> $object
+   */
+  public function add_relationship($relationship, $object, $namespaceURI = 'info:fedora/fedora-system:def/relations-external#') {
+    $ds_list = $this->get_datastreams();   
+    if (empty($ds_list['RELS-EXT'])) {
+		$dsString = '        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <rdf:Description rdf:about="info:fedora/'. $this->pid . '">
+          </rdf:Description>
+        </rdf:RDF>';
+      $this->addDatastream('RELS-EXT', NULL, $dsString, 
+		array('dsLabel'=>'Fedora object-to-object relationship metadata', 'mimeType'=>'text/xml', 'controlGroup' => 'X'));
+    }
+    $relsext = $this->client->api->getDatastreamDissemination($this->pid,'RELS-EXT')->data;
+    if (substr($object, 0, 12) != 'info:fedora/') {
+      $object = "info:fedora/$object";
+    }
+    $relsextxml = new DomDocument();    
+    $relsextxml->loadXML($relsext);
+    $description = $relsextxml->getElementsByTagNameNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'Description');
+    if ($description->length == 0) {
+      $description = $relsextxml->getElementsByTagNameNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'description');
+    }
+    $description=$description->item(0);
+    // Create the new relationship node.
+    $newrel = $relsextxml->createElementNS($namespaceURI, $relationship);
+    $newrel->setAttribute('rdf:resource', $object);
+    $description->appendChild($newrel);
+    $this->client->api->modifyDatastream( $this->pid, 'RELS-EXT', NULL, $relsextxml->saveXML(), 
+			array('dsLabel'=>"Fedora Object-to-Object Relationship Metadata", 'mimeType'=>'text/xml'));
+  }
+  
+  /**
    * Returns an associative array of this object's datastreams. Results look like this:
    *
    *  'DC' =>
@@ -90,7 +125,7 @@ class FedoraItem extends PropertyObject {
     }
     
     $result = $this->client->api->listDatastreams($this->pid);
-    if ($result->code != 200) {
+	if ($result->code != 200) {
       throw new FedoraRestException($result->error);
     }
     $datastreams_doc = new SimpleXMLElement($result->data);
@@ -122,7 +157,7 @@ class FedoraItem extends PropertyObject {
     return $ds_list;
   }
   
-  protected function get_label() {
+  public function get_label() {
     return (string) $this->objectProfile->objLabel;
   }
   
@@ -130,7 +165,7 @@ class FedoraItem extends PropertyObject {
     $this->modifyObject($label);
   }
   
-  protected function get_ownerId() {
+  public function get_ownerId() {
     return  (string) $this->objectProfile->objOwnerId;
   }
   
@@ -138,7 +173,7 @@ class FedoraItem extends PropertyObject {
     $this->modifyObject($this->label, $ownerId);
   }
   
-  protected function get_state() {
+  public function get_state() {
     return (string) $this->objectProfile->objState;
   }
   
@@ -146,19 +181,19 @@ class FedoraItem extends PropertyObject {
     $this->modifyObject(NULL, NULL, $state);
   }
   
-  protected function get_pid() {
+  public function get_pid() {
     return $this->pid;
   }
   
-  protected function get_createDate() {
+  public function get_createDate() {
     return new DateTime((string) $this->objectProfile->objCreateDate);
   }
   
-  protected function get_lastModDate() {
+  public function get_lastModDate() {
     return  new DateTime((string) $this->objectProfile->objLastModDate);
   }
   
-  protected function get_models() {
+  public function get_models() {
     $models = array();
     foreach ($this->objectProfile->objModels->model as $model) {
       $models[] = (string) $model;

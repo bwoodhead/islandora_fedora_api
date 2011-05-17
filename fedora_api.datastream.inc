@@ -61,7 +61,7 @@ class FedoraDatastream extends PropertyObject {
     }
   }
   
-  protected function get_dsLabel() {
+  public function get_dsLabel() {
     return $this->_dsLabel;
   }
   
@@ -98,7 +98,7 @@ class FedoraDatastream extends PropertyObject {
     $this->_dsState = $state;
   }
   
-  protected function get_dsMIME() {
+  public function get_dsMIME() {
     return $this->_dsMIME;
   }
   
@@ -106,7 +106,7 @@ class FedoraDatastream extends PropertyObject {
     return $this->_dsFormatURI;
   }
   
-  protected function get_dsSize() {
+  public function get_dsSize() {
     return $this->_dsSize;
   }
   

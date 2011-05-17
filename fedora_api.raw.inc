@@ -320,11 +320,12 @@ class FedoraAPI {
 
     $fedora_url = $this->connection->requestURL(); 
     $request = $fedora_url . "/objects/$pid/datastreams/$dsID?";
+	
     foreach ($params as $param_name => $param_value) {
       $request .= $param_value != NULL ? "$param_name=$param_value&" : '';
     }
     $response = drupal_http_request($request, array('headers' => $headers, 'method' => 'POST', 'data' => $request_params));
-
+	
     return $response;
   }
 
