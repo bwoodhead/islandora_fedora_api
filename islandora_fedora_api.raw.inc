@@ -92,10 +92,10 @@ class FedoraAPIA {
     $request = "$fedora_url/objects?";
 
     if (!empty($terms)) {
-      $request .= "terms=" . drupal_encode_path($terms);
+      $request .= "terms=" . drupal_urlencode($terms);
     }
     else if (!empty($query)) {
-      $request .= "query=" . drupal_encode_path($query);
+      $request .= "query=" . drupal_urlencode($query);
     }
 
     $request .= "&resultFormat=$resultFormat";
@@ -135,7 +135,7 @@ class FedoraAPIA {
    * @return StdClass HTTP Response object. The direct response from fedora.
    */
   public function getDatastreamDissemination($pid, $dsID, $asOfDateTime = NULL, $download = NULL) {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL(); 
     $request = "$fedora_url/objects/$pid/datastreams/$dsID/content";
     $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
@@ -168,8 +168,8 @@ class FedoraAPIA {
    * @return StdClass HTTP response object from fedora
    */
   public function getDissemination($pid, $sdefPid, $method, $methodParameters = array()) {
-    $pid = drupal_encode_path($pid);
-    $sdefPid = drupal_encode_path($sdefPid);
+    $pid = drupal_urlencode($pid);
+    $sdefPid = drupal_urlencode($sdefPid);
 
     $fedora_url = $this->connection->requestURL(); 
     $request = "$fedora_url/objects/$pid/methods/$sdefPid/$method?";
@@ -208,7 +208,7 @@ class FedoraAPIA {
    *  @endcode
    */
   public function getObjectHistory($pid, $format = 'xml') {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL(); 
 
     $request = "$fedora_url/objects/$pid/versions?format=$format";
@@ -258,7 +258,7 @@ class FedoraAPIA {
    * @endcode
    */
   public function getObjectProfile($pid, $format = 'xml', $asOfDateTime = '') {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL(); 
 
     $request = "$fedora_url/objects/$pid?format=$format";
@@ -297,7 +297,7 @@ class FedoraAPIA {
    * @endcode
    */
   public function listDatastreams($pid, $format = 'xml', $asOfDateTime = '') {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL(); 
 
     $request = "$fedora_url/objects/$pid/datastreams?format=$format";
@@ -340,7 +340,7 @@ class FedoraAPIA {
    * @endcode
    */
   public function listMethods($pid, $sdefPid = '', $format = 'xml', $asOfDateTime = '') {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL(); 
 
     $request = "$fedora_url/objects/$pid/methods";
@@ -430,11 +430,11 @@ class FedoraAPIM {
       'logMessage' => NULL,
     )
   ) {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
 
     foreach (array('dsLabel', 'formatURI', 'logMessage') as $string_param) {
       if (key_exists($string_param, $params) && $params[$string_param] != NULL) {
-        $params[$string_param] = drupal_encode_path($params[$string_param]);
+        $params[$string_param] = drupal_urlencode($params[$string_param]);
       }
     }
 
@@ -510,8 +510,8 @@ class FedoraAPIM {
     $format = 'info:fedora/fedora-system:FOXML-1.1',
     $context = 'public', $encoding = 'UTF-8'
   ) {
-    $pid = drupal_encode_path($pid);
-    $format = drupal_encode_path($format);
+    $pid = drupal_urlencode($pid);
+    $format = drupal_urlencode($format);
 
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/export?";
@@ -571,7 +571,7 @@ class FedoraAPIM {
   * @endcode
   */
   public function getDatastream($pid, $dsID, $format = 'xml', $asOfDateTime = NULL, $validateChecksum = FALSE) {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
     $request = "$fedora_url/objects/$pid/datastreams/$dsID";
     $format = strtolower($format);
@@ -641,7 +641,7 @@ class FedoraAPIM {
    * @return StdClass HTTP response object.
    */
   public function getObjectXML($pid) {
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/objectXML";
     $response = drupal_http_request($request);
@@ -683,11 +683,11 @@ class FedoraAPIM {
       $pid = "new";
     }
     else {
-      $pid = drupal_encode_path($pid);
+      $pid = drupal_urlencode($pid);
     }
-    $label = drupal_encode_path($label);
-    $format = drupal_encode_path($format);
-    $logMessage = drupal_encode_path($logMessage);
+    $label = drupal_urlencode($label);
+    $format = drupal_urlencode($format);
+    $logMessage = drupal_urlencode($logMessage);
     $params = NULL;
     $headers = array(
       'Keep-Alive' => 115,
@@ -790,11 +790,11 @@ class FedoraAPIM {
       'ignoreContent' => NULL
     )
   ){
-    $pid = drupal_encode_path($pid);
+    $pid = drupal_urlencode($pid);
 
     foreach (array('dsLabel', 'formatURI', 'logMessage') as $string_param) {
       if (key_exists($string_param, $params) && $params[$string_param] != NULL) {
-        $params[$string_param] = drupal_encode_path($params[$string_param]);
+        $params[$string_param] = drupal_urlencode($params[$string_param]);
       }
     }
 
@@ -826,9 +826,9 @@ class FedoraAPIM {
    * @todo Please document this function.
    */
   public function modifyObject($pid, $label = NULL, $ownerId = NULL, $state = NULL, $logMessage = NULL) {
-    $pid = drupal_encode_path($pid);
-    $label = drupal_encode_path($label);
-    $logMessage = drupal_encode_path($logMessage);
+    $pid = drupal_urlencode($pid);
+    $label = drupal_urlencode($label);
+    $logMessage = drupal_urlencode($logMessage);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid?";
     $request .= (!empty($label) ? "label=$label&" : '')
@@ -867,8 +867,8 @@ class FedoraAPIM {
    *   On Success $response->code will be 204 and $response->error will be 'No content'.
    */
   public function purgeDatastream($pid, $dsID, $startDT = '', $endDT = '', $logMessage = '', $force = 'false') {
-    $pid = drupal_encode_path($pid);
-    $logMessage = drupal_encode_path($logMessage);
+    $pid = drupal_urlencode($pid);
+    $logMessage = drupal_urlencode($logMessage);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/datastreams/$dsID?";
     $request .= (!empty($startDT) ? "startDT=$startDT&" : '')
@@ -897,8 +897,8 @@ class FedoraAPIM {
    * $response->code is 204 on successful delete, $response->error is "No content".
    */
   public function purgeObject($pid, $logMessage = '', $force = 'false') {
-    $pid = drupal_encode_path($pid);
-    $logMessage = drupal_encode_path($logMessage);
+    $pid = drupal_urlencode($pid);
+    $logMessage = drupal_urlencode($logMessage);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid?";
     $request .= (!empty($logMessage) ? "logMessage=$logMessage" : '')

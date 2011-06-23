@@ -26,11 +26,14 @@ class FedoraRepository {
    */
   function __construct($connection = NULL) {
     if (empty($connection)) {
+      
+      module_load_include('connection.inc', 'islandora_fedora_api');
       $connection = new FedoraConnection();
     }
-
+    module_load_include('raw.inc', 'islandora_fedora_api');
     $this->connection = $connection;
-    $this->api = new FedoraAPI($this->connection);
+    $this->apia = new FedoraAPIA($this->connection);
+    $this->apim = new FedoraAPIM($this->connection);
   }
 
   /**
@@ -96,7 +99,7 @@ class FedoraRepository {
     if (!in_array('pid', $display_fields)) {
       $display_fields[] = 'pid';
     }
-    $resp = $this->api->findObjects($terms, $query, $max_results, 'xml', $display_fields);
+    $resp = $this->apia->findObjects($terms, $query, $max_results, 'xml', $display_fields);
     if ($resp->code != 200) {
       throw new FedoraRestException($resp->error);
     }

@@ -4,7 +4,7 @@
  * @file
  * A wrapper for Fedora's raw API calls to present Fedora items as manageable objects.
  */
-
+include_once('PropertyObject.inc');
 /**
  * Class presenting the Fedora Object in a nice OO fashion.
  */
@@ -44,15 +44,16 @@ class FedoraObject extends PropertyObject {
       $this->client = $client;
     }
     else {
+      module_load_include('repository.inc', 'islandora_fedora_api');
       // Make a default client using Drupal's variables.
-      $this->client = new FedoraClient();
+      $this->client = new FedoraRepository();
     }
     $this->pid = $pid;
-    if (isset(FedoraItem::$instantiated_pids[$pid])) {
-      $this->client = & FedoraItem::$instantiated_pids[$pid]->client;
-      $this->objectProfile = & FedoraItem::$instantiated_pids[$pid]->objectProfile;
-      $this->_datastreams = & FedoraItem::$instantiated_pids[$pid]->_datastreams;
-      $datastreams_doc = & FedoraItem::$instantiated_pids[$pid]->datastreams_list;
+    if (isset(FedoraObject::$instantiated_pids[$pid])) {
+      $this->client = & FedoraObject::$instantiated_pids[$pid]->client;
+      $this->objectProfile = & FedoraObject::$instantiated_pids[$pid]->objectProfile;
+      $this->_datastreams = & FedoraObject::$instantiated_pids[$pid]->_datastreams;
+      $datastreams_doc = & FedoraObject::$instantiated_pids[$pid]->datastreams_list;
     }
     else {
       // Test if this object exists here, so requests for objects that don't exist
@@ -60,7 +61,7 @@ class FedoraObject extends PropertyObject {
       if(!$this->client->objectExists($pid))
         throw new FedoraAPIObjectNotFoundException($pid);
       $this->_refreshObjectProfile();
-      FedoraItem::$instantiated_pids[$pid] = &$this;
+      FedoraObject::$instantiated_pids[$pid] = &$this;
     }
   }
 
@@ -121,7 +122,7 @@ class FedoraObject extends PropertyObject {
       return $this->_datastreams;
     }
 
-    $result = $this->client->api->listDatastreams($this->pid);
+    $result = $this->client->apia->listDatastreams($this->pid);
     if ($result->code != 200) {
       throw new FedoraRestException($result->error);
     }
@@ -145,6 +146,7 @@ class FedoraObject extends PropertyObject {
         }
 
         if (!empty($dsid) && !empty($dsmime) && $dslabel !== NULL) {
+          module_load_include('datastream.inc', 'islandora_fedora_api');
           $ds_list[$dsid] = new FedoraDatastream($this, $dsid, $dslabel, $dsmime);
         }
       }
@@ -203,7 +205,7 @@ class FedoraObject extends PropertyObject {
   }
 
   private function _refreshObjectProfile() {
-    $response = $this->client->api->getObjectProfile($this->pid);
+    $response = $this->client->apia->getObjectProfile($this->pid);
 
     if ($response->code == 200) {
       $this->objectProfile = new SimpleXMLElement($response->data);

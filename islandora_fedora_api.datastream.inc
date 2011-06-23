@@ -1,6 +1,9 @@
 <?php
-
-include_once('fedora_api.item.inc');
+/**
+ * @file
+ */
+//include_once('fedora_api.item.inc');
+include_once('PropertyObject.inc');
 
 class FedoraDatastream extends PropertyObject {
   private $_parent = NULL;

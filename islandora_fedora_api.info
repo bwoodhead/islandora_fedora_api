@@ -1,8 +1,8 @@
 name = Islandora Fedora API
 description = Wrapper for the Fedora Commons Repository REST API.
 package = Islandora
-version = 7.x-$Format:%h$-dev
-core = 7.x
+version = 6.x-$Format:%h$-dev
+core = 6.x
 
 files[] = islandora_fedora_api.raw.inc
 files[] = fedora_api.exception.inc
