@@ -625,7 +625,7 @@ class FedoraAPIM {
     $request .= (!empty($numPIDS) ? "numPIDS=$numPIDS&" : '')
              . (!empty($namespace) ? "namespace=$namespace&" : '')
              . (!empty($format) ? "format=$format" : '');
-    $response = drupal_http_request($request, array('headers' => array(), 'method' => 'POST'));
+    $response = drupal_http_request($request, array(), $method='POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
