@@ -717,7 +717,7 @@ class FedoraAPIM {
              . (!empty($ownerId) ? "ownerId=$ownerId&" : '')
              . (!empty($logMessage) ? "logMessage=$logMessage&" : '')
              . (!empty($ignoreMime) ? "ignoreMime=$ignoreMime&" : '');
-    $response = drupal_http_request($request, array('headers' => $headers, 'method' => 'POST', 'data' => $params));
+    $response = drupal_http_request($request, $headers, $method='POST', $data=$params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
