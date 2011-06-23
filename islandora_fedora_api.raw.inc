@@ -478,7 +478,7 @@ class FedoraAPIM {
       $request .= $param_value != NULL ? "$param_name=$param_value&" : '';
     }
 
-    $response = drupal_http_request($request, array('headers' => $headers, 'method' => 'POST', 'data' => $request_params));
+    $response = drupal_http_request($request, $headers, $method='POST', $data=$request_params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
