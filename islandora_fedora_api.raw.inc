@@ -903,7 +903,7 @@ class FedoraAPIM {
     $request = $fedora_url . "/objects/$pid?";
     $request .= (!empty($logMessage) ? "logMessage=$logMessage" : '')
              . (!empty($force) ? "force=$force" : '');
-    $response = drupal_http_request($request, array('headers' => array(), 'method' => 'DELETE'));
+    $response = drupal_http_request($request, array(), $method='DELETE');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
