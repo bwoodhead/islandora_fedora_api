@@ -829,14 +829,14 @@ class FedoraAPIM {
     $pid = drupal_urlencode($pid);
     $label = drupal_urlencode($label);
     $logMessage = drupal_urlencode($logMessage);
+    
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid?";
     $request .= (!empty($label) ? "label=$label&" : '')
              . (!empty($ownerId) ? "ownerId=$ownerId&" : '')
              . (!empty($state) ? "state=$state" : '')
              . (!empty($logMessage) ? "logMessage=$logMessage" : '');
-    $response = drupal_http_request($request, array('headers' => array(), 'method' => 'PUT'));
-
+    $response = drupal_http_request($request, array(), $method='PUT');
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }

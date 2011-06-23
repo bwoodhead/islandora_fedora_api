@@ -225,7 +225,7 @@ class FedoraObject extends PropertyObject {
    * @param type $logMessage 
    */
   public function modifyObject($label = NULL, $ownerId = NULL, $state = NULL, $logMessage = NULL) {
-    $response = $this->client->api->modifyObject($this->pid, $label, $ownerId, $state, $logMessage);
+    $response = $this->client->apim->modifyObject($this->pid, $label, $ownerId, $state, $logMessage);
     if ($response->code == 200) {
       $this->_refreshObjectProfile();
       return TRUE;
