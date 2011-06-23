@@ -478,7 +478,7 @@ class FedoraAPIM {
       $request .= $param_value != NULL ? "$param_name=$param_value&" : '';
     }
 
-    $response = drupal_http_request($request, $headers, $method='POST', $data=$request_params);
+    $response = drupal_http_request($request, $headers, 'POST', $request_params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
@@ -625,7 +625,7 @@ class FedoraAPIM {
     $request .= (!empty($numPIDS) ? "numPIDS=$numPIDS&" : '')
              . (!empty($namespace) ? "namespace=$namespace&" : '')
              . (!empty($format) ? "format=$format" : '');
-    $response = drupal_http_request($request, array(), $method='POST');
+    $response = drupal_http_request($request, array(), 'POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
@@ -717,7 +717,7 @@ class FedoraAPIM {
              . (!empty($ownerId) ? "ownerId=$ownerId&" : '')
              . (!empty($logMessage) ? "logMessage=$logMessage&" : '')
              . (!empty($ignoreMime) ? "ignoreMime=$ignoreMime&" : '');
-    $response = drupal_http_request($request, $headers, $method='POST', $data=$params);
+    $response = drupal_http_request($request, $headers, 'POST', $params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
@@ -813,7 +813,7 @@ class FedoraAPIM {
     }
 
     $data = (!empty($file_path) ? file_get_contents($file_path) : $ds_string);
-    $response = drupal_http_request($request, array('headers' => $headers, 'method' => 'PUT', 'data' => $data));
+    $response = drupal_http_request($request, $headers, 'PUT', $data);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
@@ -836,7 +836,7 @@ class FedoraAPIM {
              . (!empty($ownerId) ? "ownerId=$ownerId&" : '')
              . (!empty($state) ? "state=$state" : '')
              . (!empty($logMessage) ? "logMessage=$logMessage" : '');
-    $response = drupal_http_request($request, array(), $method='PUT');
+    $response = drupal_http_request($request, array(), 'PUT');
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
@@ -875,7 +875,7 @@ class FedoraAPIM {
              . (!empty($endDT) ? "endDT=$endDT&" : '')
              . (!empty($logMessage) ? "logMessage=$logMessage" : '')
              . (!empty($force) ? "force=$force" : '');
-    $response = drupal_http_request($request, array('headers' => array(), 'method' => 'DELETE'));
+    $response = drupal_http_request($request, array(), 'DELETE');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
@@ -903,7 +903,7 @@ class FedoraAPIM {
     $request = $fedora_url . "/objects/$pid?";
     $request .= (!empty($logMessage) ? "logMessage=$logMessage" : '')
              . (!empty($force) ? "force=$force" : '');
-    $response = drupal_http_request($request, array(), $method='DELETE');
+    $response = drupal_http_request($request, array(), 'DELETE');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
