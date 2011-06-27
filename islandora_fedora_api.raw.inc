@@ -35,6 +35,7 @@ class FedoraAPIA {
     }
     else {
       // Construct a connection from Drupal's API settings.
+      module_load_include('connection.inc', 'islandora_fedora_api');
       $this->connection = new FedoraConnection();
     }
   }
@@ -381,6 +382,7 @@ class FedoraAPIM {
     }
     else {
       // Construct a connection from Drupal's API settings.
+      module_load_include('connection.inc', 'islandora_fedora_api');
       $this->connection = new FedoraConnection();
     }
   }
@@ -949,8 +951,7 @@ class FedoraAPIM {
    * https://wiki.duraspace.org/display/FCR30/REST+API#RESTAPI-addRelationship
    * 
    * @todo
-   *   figure out the behaviour when an already existing relationship
-   *  or predicate is added
+   *   figure out the behaviour when an already existing relationship or predicate is added
    *  
    *  @param string $pid
    *    Persistent identifier of the digital object.
@@ -958,7 +959,7 @@ class FedoraAPIM {
    *    Predicate of the relationship
    *  @param string $object
    *    object of the relationship
-   *  @param $optional_args
+   *  @param array $optional_args
    *  	(optional) This is an associative array of the optional arguments for the rest api the format is: 
    *  		string is_literal
    *    	    (optional) true if the object of the relationship is a literal, false if it is a fedora pid
