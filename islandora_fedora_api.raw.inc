@@ -912,6 +912,45 @@ class FedoraAPIM {
     return $response;
   }
 
+  /**
+   * @param string $pid: Persistent identifier of the digital object.
+   */
+  public function getRelationships($pid) {
+    
+    $pid = drupal_urlencode($pid);
+    $fedora_url = $this->connection->requestURL();
+    $request = $fedora_url . "/objects/$pid/relationships?";
+    $request .= '';
+    $response = drupal_http_request($request, array(), 'GET');
+
+    if(!FedoraAPIUtils::testSuccess($response)) {
+      throw new FedoraApiRestException($response);
+    }
+
+    return $response;
+  }
+    
+  /**
+   * This function will add a single relationship to the object
+   * @todo: figure out the behaviour when an already existing relationship
+   *  or predicate is added
+   *  
+   *  @param string $pid: Persistent identifier of the digital object.
+   */
+  public function addRelatioinship($pid) {
+    
+    $pid = drupal_urlencode($pid);
+    $fedora_url = $this->connection->requestURL();
+    $request = $fedora_url . "/objects/$pid/relationships/NEEW?";
+    $request .= '';
+    $response = drupal_http_request($request, array(), 'POST');
+
+    if(!FedoraAPIUtils::testSuccess($response)) {
+      throw new FedoraApiRestException($response);
+    }
+
+    return $response;
+  }
 }
 
 
