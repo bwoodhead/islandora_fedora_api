@@ -913,9 +913,19 @@ class FedoraAPIM {
   }
 
   /**
-   * @param string $pid: Persistent identifier of the digital object.
+   * This function will return all the relationships on an object that
+   * @param string $pid
+   *   Persistent identifier of the digital object.
+   * @param string $predicate
+   * 
+   * @param string $format
+   *   (optional)
+   * @param string $subject
+   *   (optional)
+   * 
+   * @return StdClass HTTP response object
    */
-  public function getRelationships($pid) {
+  public function getRelationships($pid, $predicate, $format, $subject) {
     
     $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
@@ -926,22 +936,33 @@ class FedoraAPIM {
     if(!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
-
+    
     return $response;
   }
     
   /**
    * This function will add a single relationship to the object
-   * @todo: figure out the behaviour when an already existing relationship
+   * @todo
+   *   figure out the behaviour when an already existing relationship
    *  or predicate is added
    *  
-   *  @param string $pid: Persistent identifier of the digital object.
+   *  @param string $pid
+   *    Persistent identifier of the digital object.
+   *  @param string $predicate
+   *  
+   *  @param string $is_literal
+   *  
+   *  @param string $subject
+   *    (optional)
+   *  @param string $datatype
+   *    (optional)
+   *  @return StdClass HTTP response object
    */
-  public function addRelatioinship($pid) {
+  public function addRelatioinship($pid, $predicate, $is_literal, $subject, $datatype) {
     
     $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
-    $request = $fedora_url . "/objects/$pid/relationships/NEEW?";
+    $request = $fedora_url . "/objects/$pid/relationships/new?";
     $request .= '';
     $response = drupal_http_request($request, array(), 'POST');
 
@@ -952,7 +973,6 @@ class FedoraAPIM {
     return $response;
   }
 }
-
 
 /**
  * A collection of helpful utilities for dealing with fedora.
