@@ -913,15 +913,18 @@ class FedoraAPIM {
   }
 
   /**
-   * This function will return all the relationships on an object that
+   * This function will return all the relationships on the object that meet the restrictions specified
+   * https://wiki.duraspace.org/display/FCR30/REST+API#RESTAPI-getRelationships
+   * 
    * @param string $pid
    *   Persistent identifier of the digital object.
    * @param string $predicate
-   * 
+   *  (optional)  If missing all relationships will be returned
    * @param string $format
-   *   (optional)
+   *   (optional) format of the resonse 	xml (returns rdf/xml), rdf/xml, n-triples, turtle, sparql 
+   *   defaults as xml
    * @param string $subject
-   *   (optional)
+   *   (optional) iether a uri for the boject or one of its datastreams, defaults to the object pid
    * 
    * @return StdClass HTTP response object
    */
@@ -939,9 +942,11 @@ class FedoraAPIM {
     
     return $response;
   }
-    
+  
   /**
    * This function will add a single relationship to the object
+   * https://wiki.duraspace.org/display/FCR30/REST+API#RESTAPI-addRelationship
+   * 
    * @todo
    *   figure out the behaviour when an already existing relationship
    *  or predicate is added
@@ -949,16 +954,18 @@ class FedoraAPIM {
    *  @param string $pid
    *    Persistent identifier of the digital object.
    *  @param string $predicate
-   *  
+   *    Predicate of the relationship
+   *  @param string $object
+   *    object of the relationship
    *  @param string $is_literal
-   *  
+   *    (optional) true if the object of the relationship is a literal, false if it is a fedora pid
    *  @param string $subject
-   *    (optional)
+   *    (optional) either a uri for the boject or one of its datastreams, defaults to the object pid
    *  @param string $datatype
-   *    (optional)
+   *    (optional)  The data type of the object, only supply if the object is a literal
    *  @return StdClass HTTP response object
    */
-  public function addRelatioinship($pid, $predicate, $is_literal, $subject, $datatype) {
+  public function addRelatioinship($pid, $predicate, $object, $is_literal, $subject, $datatype) {
     
     $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
