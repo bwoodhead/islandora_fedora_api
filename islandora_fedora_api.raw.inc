@@ -928,12 +928,13 @@ class FedoraAPIM {
    * 
    * @return StdClass HTTP response object
    */
-  public function getRelationships($pid, $predicate, $format, $subject) {
-    
+  public function getRelationships($pid, $predicate, $subject, $format) {
     $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/relationships?";
-    $request .= '';
+    $request .= (!empty($subject) ? "subject=$subject&" : '')
+                         .(!empty($predicate) ? "predicate=$predicate&" : '')
+                         .(!empty($format) ? "format=$format&" : '');
     $response = drupal_http_request($request, array(), 'GET');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
@@ -957,20 +958,26 @@ class FedoraAPIM {
    *    Predicate of the relationship
    *  @param string $object
    *    object of the relationship
-   *  @param string $is_literal
-   *    (optional) true if the object of the relationship is a literal, false if it is a fedora pid
-   *  @param string $subject
-   *    (optional) either a uri for the boject or one of its datastreams, defaults to the object pid
-   *  @param string $datatype
-   *    (optional)  The data type of the object, only supply if the object is a literal
+   *  @param $optional_args
+   *  	(optional) This is an associative array of the optional arguments for the rest api the format is: 
+   *  		string is_literal
+   *    	    (optional) true if the object of the relationship is a literal, false if it is a fedora pid
+   *      string subject
+   *        (optional) either a uri for the boject or one of its datastreams, defaults to the object pid
+   *      string datatype
+   *        (optional)  The data type of the object, only supply if the object is a literal
    *  @return StdClass HTTP response object
    */
-  public function addRelatioinship($pid, $predicate, $object, $is_literal, $subject, $datatype) {
+  public function addRelatioinship($pid, $predicate, $object, $optional_args) {
     
     $pid = drupal_urlencode($pid);
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/relationships/new?";
-    $request .= '';
+    $request .= (!isset($optional_args['subject']) ? "subject=$subject&" : '')
+                         ."predicate=$predicate&"
+                         ."object=$object&"
+                         .(!isset($optional_args['is_literal']) ? "isLiteral=$is_literal&" : '')
+                         .(!isset($optional_args['datatype']) ? "datatype=$datatype&" : '');
     $response = drupal_http_request($request, array(), 'POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
