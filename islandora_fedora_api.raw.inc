@@ -107,6 +107,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if (!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -148,6 +149,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -183,6 +185,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -216,6 +219,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -267,6 +271,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -306,6 +311,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -351,6 +357,7 @@ class FedoraAPIA {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -483,6 +490,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, $headers, 'POST', $request_params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -524,6 +532,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -592,6 +601,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -630,6 +640,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, array(), 'POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -649,6 +660,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -722,6 +734,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, $headers, 'POST', $params);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -818,6 +831,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, $headers, 'PUT', $data);
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -840,6 +854,7 @@ class FedoraAPIM {
              . (!empty($logMessage) ? "logMessage=$logMessage" : '');
     $response = drupal_http_request($request, array(), 'PUT');
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -880,6 +895,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, array(), 'DELETE');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
@@ -940,6 +956,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, array(), 'GET');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
     
@@ -982,6 +999,7 @@ class FedoraAPIM {
     $response = drupal_http_request($request, array(), 'POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
     }
 
