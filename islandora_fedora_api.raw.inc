@@ -937,7 +937,8 @@ class FedoraAPIM {
    * @param string $pid
    *   Persistent identifier of the digital object.
    * @param string $predicate
-   *  (optional)  If missing all relationships will be returned
+   *  (optional)  If missing all relationships will be returned; this should be the namespace followed by the
+   *  predicate, simply concatenated together with no delimination
    * @param string $format
    *   (optional) format of the resonse 	xml (returns rdf/xml), rdf/xml, n-triples, turtle, sparql 
    *   defaults as xml
@@ -948,13 +949,26 @@ class FedoraAPIM {
    */
   public function getRelationships($pid, $predicate, $subject, $format) {
     $pid = drupal_urlencode($pid);
+    
+    //druapl url encode should not be used for string arugments
+    if (!empty($predicate)) {
+      $predicate=urlencode($predicate);
+    }
+    if (!empty($subject)) {
+      $subject=urlencode($subject);
+    }
+    if (!empty($format)) {
+      $format=urlencode($format);
+    }
+    
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/relationships?";
     $request .= (!empty($subject) ? "subject=$subject&" : '')
                          .(!empty($predicate) ? "predicate=$predicate&" : '')
-                         .(!empty($format) ? "format=$format&" : '');
+                         .(!empty($format) ? "format=$format" : '');
+                         
     $response = drupal_http_request($request, array(), 'GET');
-
+    
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
@@ -995,7 +1009,7 @@ class FedoraAPIM {
                          ."predicate=$predicate&"
                          ."object=$object&"
                          .(!isset($optional_args['is_literal']) ? "isLiteral=$is_literal&" : '')
-                         .(!isset($optional_args['datatype']) ? "datatype=$datatype&" : '');
+                         .(!isset($optional_args['datatype']) ? "datatype=$datatype" : '');
     $response = drupal_http_request($request, array(), 'POST');
 
     if(!FedoraAPIUtils::testSuccess($response)) {
