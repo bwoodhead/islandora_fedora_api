@@ -1000,22 +1000,35 @@ class FedoraAPIM {
    *        (optional)  The data type of the object, only supply if the object is a literal
    *  @return StdClass HTTP response object
    */
-  public function addRelatioinship($pid, $predicate, $object, $optional_args) {
-    
+  public function addRelationship($pid, $predicate, $object, $optional_args) {
+    dsm($optional_args);
     $pid = drupal_urlencode($pid);
+      //druapl url encode should not be used for string arugments
+    if (!empty($predicate)) {
+      $predicate=urlencode($predicate);
+    }
+    if (!empty($object)) {
+      $object=urlencode($object);
+    }
+    if (isset($optional_args['subject'])) {
+      $optional_args['subject']=urlencode($optional_args['subject']);
+    }   
+    
     $fedora_url = $this->connection->requestURL();
     $request = $fedora_url . "/objects/$pid/relationships/new?";
-    $request .= (!isset($optional_args['subject']) ? "subject=$subject&" : '')
+    $request .= (isset($optional_args['subject']) ? "subject=$subject&" : '')
                          ."predicate=$predicate&"
                          ."object=$object&"
-                         .(!isset($optional_args['is_literal']) ? "isLiteral=$is_literal&" : '')
-                         .(!isset($optional_args['datatype']) ? "datatype=$datatype" : '');
+                         .(isset($optional_args['is_literal']) ? "isLiteral=". $optional_args['is_literal'] ."&" : '')
+                         .(isset($optional_args['datatype']) ? "datatype=". $optional_args['datatype'] : '');
     $response = drupal_http_request($request, array(), 'POST');
-
+    dsm($request);
+    dsm($response);
+    /*
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
-    }
+    }*/
 
     return $response;
   }
