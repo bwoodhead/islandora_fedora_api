@@ -368,6 +368,8 @@ class FedoraAPIA {
 
 /**
  * A low level wrapper on fedora APIM functions
+ * TODO
+ *   more thorough testing of relationship functions
  */
 class FedoraAPIM {
   /**
@@ -1000,7 +1002,6 @@ class FedoraAPIM {
    *  @return StdClass HTTP response object
    */
   public function addRelationship($pid, $predicate, $object, $optional_args) {
-    dsm($optional_args);
     $pid = drupal_urlencode($pid);
       //druapl url encode should not be used for string arugments
     if (!empty($predicate)) {
@@ -1052,7 +1053,6 @@ class FedoraAPIM {
    *  @return StdClass HTTP response object
    */
   public function purgeRelationship($pid, $predicate, $object, $optional_args) {
-    dsm($optional_args);
     $pid = drupal_urlencode($pid);
       //druapl url encode should not be used for string arugments
     if (!empty($predicate)) {
@@ -1072,9 +1072,7 @@ class FedoraAPIM {
                          ."object=$object&"
                          .(isset($optional_args['isLiteral']) ? "isLiteral=". $optional_args['isLiteral'] ."&" : '')
                          .(isset($optional_args['datatype']) ? "datatype=". $optional_args['datatype'] : '');
-    $response = drupal_http_request($request, array(), 'POST');
-    dsm($request);
-    dsm($response);
+    $response = drupal_http_request($request, array(), 'DELETE');
     
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
