@@ -981,9 +981,8 @@ class FedoraAPIM {
    * This function will add a single relationship to the object
    * https://wiki.duraspace.org/display/FCR30/REST+API#RESTAPI-addRelationship
    * 
-   * @todo
-   *   figure out the behaviour when an already existing relationship or predicate is added
-   *  
+   * This function will not overwrite an existing one
+   * 
    *  @param string $pid
    *    Persistent identifier of the digital object.
    *  @param string $predicate
@@ -1019,20 +1018,73 @@ class FedoraAPIM {
     $request .= (isset($optional_args['subject']) ? "subject=$subject&" : '')
                          ."predicate=$predicate&"
                          ."object=$object&"
-                         .(isset($optional_args['is_literal']) ? "isLiteral=". $optional_args['is_literal'] ."&" : '')
+                         .(isset($optional_args['isLiteral']) ? "isLiteral=". $optional_args['isLiteral'] ."&" : '')
+                         .(isset($optional_args['datatype']) ? "datatype=". $optional_args['datatype'] : '');
+    $response = drupal_http_request($request, array(), 'POST');
+    
+    if(!FedoraAPIUtils::testSuccess($response)) {
+      module_load_include('exception.inc', 'islandora_fedora_api');
+      throw new FedoraApiRestException($response);
+    }
+
+    return $response;
+  }
+  
+ /**
+   * This function will purge a single relationship (unless maybe if there is duplication) 
+   * from an object
+   * https://wiki.duraspace.org/display/FCR30/REST+API#RESTAPI-purgeRelationship
+   * 
+   *  @param string $pid
+   *    Persistent identifier of the digital object.
+   *  @param string $predicate
+   *    Predicate of the relationship
+   *  @param string $object
+   *    object of the relationship
+   *  @param array $optional_args
+   *  	(optional) This is an associative array of the optional arguments for the rest api the format is: 
+   *  		string is_literal
+   *    	    (optional) true if the object of the relationship is a literal, false if it is a fedora pid
+   *      string subject
+   *        (optional) either a uri for the boject or one of its datastreams, defaults to the object pid
+   *      string datatype
+   *        (optional)  The data type of the object, only supply if the object is a literal
+   *  @return StdClass HTTP response object
+   */
+  public function purgeRelationship($pid, $predicate, $object, $optional_args) {
+    dsm($optional_args);
+    $pid = drupal_urlencode($pid);
+      //druapl url encode should not be used for string arugments
+    if (!empty($predicate)) {
+      $predicate=urlencode($predicate);
+    }
+    if (!empty($object)) {
+      $object=urlencode($object);
+    }
+    if (isset($optional_args['subject'])) {
+      $optional_args['subject']=urlencode($optional_args['subject']);
+    }   
+    
+    $fedora_url = $this->connection->requestURL();
+    $request = $fedora_url . "/objects/$pid/relationships?";
+    $request .= (isset($optional_args['subject']) ? "subject=$subject&" : '')
+                         ."predicate=$predicate&"
+                         ."object=$object&"
+                         .(isset($optional_args['isLiteral']) ? "isLiteral=". $optional_args['isLiteral'] ."&" : '')
                          .(isset($optional_args['datatype']) ? "datatype=". $optional_args['datatype'] : '');
     $response = drupal_http_request($request, array(), 'POST');
     dsm($request);
     dsm($response);
-    /*
+    
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
-    }*/
+    }
 
     return $response;
   }
 }
+
 
 /**
  * A collection of helpful utilities for dealing with fedora.
