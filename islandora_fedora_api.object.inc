@@ -90,11 +90,11 @@ class FedoraObject extends PropertyObject {
    * @param string $ds_string
    * @param type $params 
    */
-  public function addDatastream($dsID, $file_path = NULL, $ds_string = NULL, $params = array('altIDs' => NULL, 'dsLabel' => NULL, 'dsState' => NULL, 'formatURI' => NULL,
+  public function addDatastream($dsID, $file_path = NULL, $ds_string = NULL, $params = array('altIDs' => NULL, 'controlGroup' => NULL, 'dsLabel' => NULL, 'dsState' => NULL, 'formatURI' => NULL,
     'checksumType' => NULL, 'checksum' => NULL, 'mimeType' => NULL,
     'logMessage' => NULL)) {
 
-    $response = $this->client->api->addDatastream($this->pid, $dsID, $file_path, $ds_string, $params);
+    $response = $this->client->apim->addDatastream($this->pid, $dsID, $file_path, $ds_string, $params);
     if ($response->code != 201) {
       throw new FedoraRestException($response->error);
     }
