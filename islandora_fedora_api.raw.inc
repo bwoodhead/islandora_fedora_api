@@ -949,7 +949,7 @@ class FedoraAPIM {
    * 
    * @return StdClass HTTP response object
    */
-  public function getRelationships($pid, $predicate, $subject, $format) {
+  public function getRelationships($pid, $predicate = NULL, $subject = NULL, $format = NULL) {
     $pid = drupal_urlencode($pid);
     
     //druapl url encode should not be used for string arugments
@@ -1001,7 +1001,7 @@ class FedoraAPIM {
    *        (optional)  The data type of the object, only supply if the object is a literal
    *  @return StdClass HTTP response object
    */
-  public function addRelationship($pid, $predicate, $object, $optional_args) {
+  public function addRelationship($pid, $predicate, $object, $optional_args = NULL) {
     $pid = drupal_urlencode($pid);
       //druapl url encode should not be used for string arugments
     if (!empty($predicate)) {
@@ -1052,7 +1052,7 @@ class FedoraAPIM {
    *        (optional)  The data type of the object, only supply if the object is a literal
    *  @return StdClass HTTP response object
    */
-  public function purgeRelationship($pid, $predicate, $object, $optional_args) {
+  public function purgeRelationship($pid, $predicate, $object, $optional_args = NULL) {
     $pid = drupal_urlencode($pid);
       //druapl url encode should not be used for string arugments
     if (!empty($predicate)) {
