@@ -50,7 +50,7 @@ class FedoraDatastream extends PropertyObject {
   
   protected function get_content() {
 
-    $resp = $this->parent->client->api->getDatastreamDissemination($this->parent->pid, $this->_dsID);
+    $resp = $this->parent->client->apia->getDatastreamDissemination($this->parent->pid, $this->_dsID);
     if ($resp->code != 200) {
       throw new FedoraRestException("Error getting datastream contents $dsID . $resp->error");
     }
@@ -58,7 +58,7 @@ class FedoraDatastream extends PropertyObject {
   }
   
   protected function set_content($content) {
-    $resp = $this->parent->client->api->modifyDatastream($this->parent->pid, $this->_dsID, NULL, $content);
+    $resp = $this->parent->client->apim->modifyDatastream($this->parent->pid, $this->_dsID, NULL, $content);
     if ($resp->code != 200) {
       throw new FedoraRestException("Unable to set datastream contents. " . $resp->error);
     }
@@ -69,7 +69,7 @@ class FedoraDatastream extends PropertyObject {
   }
   
   protected function set_dsLabel($label) {
-    $resp = $this->parent->client->api->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('dsLabel' => $label));
+    $resp = $this->parent->client->apim->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('dsLabel' => $label));
     if ($resp->code != 200) {
       throw new FedoraRestException("Unable to set label, $resp->error");
     }
@@ -94,7 +94,7 @@ class FedoraDatastream extends PropertyObject {
     if (!in_array($state, array('A', 'I', 'D'))) {
       throw new FedoraRestException("State must be one of 'A', 'I', or 'D'");
     }
-    $resp = $this->parent->client->api->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('dsState' => $state));
+    $resp = $this->parent->client->apim->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('dsState' => $state));
     if ($resp->code != 200) {
       throw new FedoraRestException("Unable to set label, $resp->error");
     }
@@ -119,7 +119,7 @@ class FedoraDatastream extends PropertyObject {
   
   protected function set_dsVersionable($versionable) {
     $versionable = $versionable == TRUE ? 'true' : 'false';
-    $resp = $this->parent->client->api->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('versionable' => $versionable));
+    $resp = $this->parent->client->apim->modifyDatastream($this->parent->pid, $this->_dsID, NULL, NULL, array('versionable' => $versionable));
     if ($resp->code != 200) {
       throw new FedoraRestException("Unable to set dsVersionable, $resp->error");
     }
@@ -171,7 +171,7 @@ class FedoraDatastream extends PropertyObject {
    * Call out to Fedora to populate this Datastream object's fields.
    */
   protected function _refresh() {
-    $resp = $this->_parent->client->api->getDatastream($this->_parent->pid, $this->_dsID);
+    $resp = $this->_parent->client->apim->getDatastream($this->_parent->pid, $this->_dsID);
     if ($resp->code == 200) {
       $this->_decodeDatastreamXML($resp->data);
       $this->_populated = TRUE;
