@@ -15,7 +15,7 @@ class FedoraConnection {
       $this->url = $url;
     }
     else {
-      $this->url = variable_get('fedora_server_url', 'http://localhost:8080/fedora');
+      $this->url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
     }
     
     if (!empty($username)) {
