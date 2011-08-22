@@ -269,9 +269,7 @@ class FedoraAPIA {
     $request = "$fedora_url/objects/$pid?format=$format";
     $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
     
-    dsm($request);
     $response = drupal_http_request($request);
-    dsm($response);
     
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
