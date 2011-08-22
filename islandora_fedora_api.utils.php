@@ -4,19 +4,19 @@
  * @return $collection_list
  *   an associated array of collection pids and names
  */
-function islandora_workflow_get_all_collections() {
+function get_all_collections() {
   
   $collection_list=array();
   
   //read in the itql query for getting collections
-  $query_file_name=drupal_get_path('module', 'islandora_workflow') . '/collection_query.txt';
+  $query_file_name=drupal_get_path('module', 'islandora_fedora_api') . '/collection_query.txt';
   $query_file_handle=fopen($query_file_name, "r");
   $query_string=fread($query_file_handle, filesize($query_file_name));
   fclose($query_file_handle);
   //make query
-  $collection_list=islandora_workflow_get_related_objects($query_string);
+  $collection_list=get_related_objects($query_string);
   //strip out non-applicable collections via namespace
-  $collection_list=islandora_workflow_limit_collections_by_namespace($collection_list);
+  $collection_list=limit_collections_by_namespace($collection_list);
   return $collection_list;
 }
 
@@ -34,7 +34,7 @@ function islandora_workflow_get_all_collections() {
  * @return array $collections
  *   The collections that exist in the indicated namespaces
  */
-function islandora_workflow_limit_collections_by_namespace($existing_collections, $pid_namespaces=null){
+function limit_collections_by_namespace($existing_collections, $pid_namespaces=null){
   //if no namespace list supplied get it from fedora_repository module's varaiables
   if ($pid_namespaces==null) {
     $pid_namespaces = array();
@@ -62,11 +62,13 @@ function islandora_workflow_limit_collections_by_namespace($existing_collections
  * @return array $list_of_objects
  *   a nice array of objects
  */
-function islandora_workflow_get_related_objects($itql_query) {
+function get_related_objects($itql_query) {
+  
   module_load_include('inc', 'fedora_repository', 'CollectionClass');
+  
   $collection_class = new CollectionClass();
   $query_results = $collection_class->getRelatedItems(NULL, $itql_query);
-  $list_of_objects = islandora_workflow_itql_to_array($query_results);
+  $list_of_objects = itql_to_array($query_results);
   return $list_of_objects;
 }
 
@@ -81,7 +83,7 @@ function islandora_workflow_get_related_objects($itql_query) {
  * @return array $list_of_objects
  *   The well formed array version
  */
-function islandora_workflow_itql_to_array($query_results) {
+function itql_to_array($query_results) {
   try {
     $xml = new SimpleXMLElement($query_results);
   } catch (Exception $e) {
