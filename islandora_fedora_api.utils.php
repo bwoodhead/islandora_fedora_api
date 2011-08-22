@@ -100,3 +100,28 @@ function itql_to_array($query_results) {
   }
   return $list_of_objects;
 }
+
+/**
+ * This function gets all the members of a collection through the relationship of 'isMemberOf' 
+ * and 'isMemberOfCollection' the two relationships need to be checked because there is no
+ * Fedora enforced standard.
+ * @author
+ *   William Panting
+ * @param array $collection_id
+ *   The collection to get the members of.
+ * @return array $member_list_full
+ *   The array containing all the pids of members of the collection.
+ */
+function get_all_members_of_collection($collection_id) {
+  
+  module_load_include('inc', 'fedora_repository', 'api/fedora_collection'); 
+  
+  $member_list_full=array();
+  
+  $member_list1=get_related_items_as_array($collection_id, 'isMemberOf', 10000 , 0, FALSE);
+  $member_list2=get_related_items_as_array($collection_id, 'isMemberOfCollection', 10000 , 0, FALSE);
+  
+  $member_list_full=array_merge($member_list1, $member_list2);
+  
+  return $member_list_full;
+}
