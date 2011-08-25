@@ -832,7 +832,26 @@ class FedoraAPIM {
 
     $data = (!empty($file_path) ? file_get_contents($file_path) : $ds_string);
     $response = drupal_http_request($request, $headers, 'PUT', $data);
-
+    
+    /*
+     * This code block attempts to run the request mulitple times 
+     * if there is a 'Conflict' response which can indicate that Fedora
+     * simply needs more time to finish its last operation on the object
+     * 
+     * if this 'Conflict' gets noted during other rest calls this should be 
+     * turned into a function
+     * @author
+     *   William Panting
+     */
+    dsm($response);//debug
+    $attempts=0;
+    while($response->code==409 && $attempts<3) {
+      $response = drupal_http_request($request, $headers, 'PUT', $data);
+      dsm($response);//debug
+      $attempts++;
+    }
+    
+    
     if(!FedoraAPIUtils::testSuccess($response)) {
       module_load_include('exception.inc', 'islandora_fedora_api');
       throw new FedoraApiRestException($response);
