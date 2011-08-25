@@ -838,16 +838,16 @@ class FedoraAPIM {
      * if there is a 'Conflict' response which can indicate that Fedora
      * simply needs more time to finish its last operation on the object
      * 
+     * This needs some more thorough testing
+     * 
      * if this 'Conflict' gets noted during other rest calls this should be 
      * turned into a function
      * @author
      *   William Panting
      */
-    dsm($response);//debug
     $attempts=0;
     while($response->code==409 && $attempts<3) {
       $response = drupal_http_request($request, $headers, 'PUT', $data);
-      dsm($response);//debug
       $attempts++;
     }
     
