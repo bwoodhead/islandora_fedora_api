@@ -10,6 +10,9 @@
  * @todo
  *   test
  *   
+ * some of these should appear in different files:
+ * perhaps we should sublcass object with a collection,
+ * and some query things in the repository class
  *   
  */
 
@@ -305,3 +308,61 @@ function performItqlQuery($query, $limit = -1, $offset = 0) {
        $doc = DOMDocument::loadXML(do_curl($queryUrl));
        return ((!$doc)?(new DOMDocument()):($doc));
    }
+   
+   
+/**
+ * This function will get the collection that the indicated object is a member of
+ * @param string $object_id
+ *   The id of the object to get the parent of
+ * @return mixed $parent
+ *   The id of the collection object that contains the $object_id object or FALSE if no parent found
+ * @todo:
+ *   should return all parents... make it return an array
+ *   put in the object class
+ */
+function get_object_parent($object_id) {
+  //init
+  $parent_relationship='isMemberOf';
+  $parent_relationship_namespace='info:fedora/fedora-system:def/relations-external#';
+  module_load_include('raw.inc', 'islandora_fedora_api'); //for getting an object
+  $apim_object= new FedoraAPIM();
+  $relationships_parser = new DOMDocument();
+  $parent=FALSE;
+  
+  //get relation ship data
+  try {
+    $relationships=$apim_object->getRelationships($object_id, $parent_relationship_namespace . $parent_relationship);
+    //grab realtionship
+    $relationships_parser->loadXML($relationships->data);
+    $relationship_elements=$relationships_parser->getElementsByTagNameNS($parent_relationship_namespace, $parent_relationship);
+    $relationship=$relationship_elements->item(0);
+  }
+  catch (FedoraAPIRestException $e) {
+    return FALSE;
+  }
+  
+  //handle second collecion memberships string if the first wasn't found
+  if (empty($relationship)) {
+    $parent_relationship='isMemberOfCollection';
+    try {
+      $relationships=$apim_object->getRelationships($object_id, $parent_relationship_namespace . $parent_relationship);
+      //grab realtionship 
+      $relationships_parser->loadXML($relationships->data);
+      $relationship_elements=$relationships_parser->getElementsByTagNameNS($parent_relationship_namespace, $parent_relationship);
+      $relationship=$relationship_elements->item(0);
+    }
+    catch (FedoraAPIRestException $e) {
+      return FALSE;
+    }
+  }
+  
+  //handle relationship data
+  if (!empty($relationship)) {
+    $parent=$relationship->getAttributeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'resource');
+    //cut out 'info:fedora/'
+    if (substr($parent, 0, 12)=='info:fedora/') {
+      $parent=substr($parent, 12, strlen($parent));
+    }
+  }
+  return $parent;
+}

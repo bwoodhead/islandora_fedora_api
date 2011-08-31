@@ -58,8 +58,10 @@ class FedoraObject extends PropertyObject {
     else {
       // Test if this object exists here, so requests for objects that don't exist
       // don't hit the Fedora logs.
-      if(!$this->client->objectExists($pid))
+      if(!$this->client->objectExists($pid)) {
+        module_load_include('exception.inc', 'islandora_fedora_api');
         throw new FedoraAPIObjectNotFoundException($pid);
+      }
       $this->_refreshObjectProfile();
       FedoraObject::$instantiated_pids[$pid] = &$this;
     }
