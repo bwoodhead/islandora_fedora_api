@@ -21,7 +21,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
 
     // Create and login user.
     $this->privileged_user = $this->drupalCreateFedoraUser();
-    $this->pass("Password: ".$this->privileged_user->pass);
+    $this->pass("Password: " . $this->privileged_user->pass);
 
     $this->drupalLogin($this->privileged_user);
 
@@ -60,11 +60,11 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass('Fedora API-A getDatastreamDissemination passed.');
       }
       else {
-        $this->fail("Failed to retrieve DC datastream for fedora-system:FedoraObject-3.0. Instead got: ".$dc_stream);
+        $this->fail("Failed to retrieve DC datastream for fedora-system:FedoraObject-3.0. Instead got: " . $dc_stream);
       }
     }
     else {
-      $this->fail("Error calling drupal_http_request. ".$dc_stream->error);
+      $this->fail("Error calling drupal_http_request. " . $dc_stream->error);
     }
 
     $dc_html = $api->getDissemination('fedora-system:FedoraObject-3.0', 'fedora-system:3', 'viewDublinCore');
@@ -73,7 +73,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass('Fedora API-A getDissemination passed.');
       }
       else {
-        $this->fail("Failed to retrieve viewDublinCore Disseminator for fedora-system:FedoraObject-3.0. Instead got: ".$dc_html);
+        $this->fail("Failed to retrieve viewDublinCore Disseminator for fedora-system:FedoraObject-3.0. Instead got: " . $dc_html);
       }
     }
     else {
@@ -86,7 +86,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass('Fedora API-A getObjectHistory passed.');
       }
       else {
-        $this->fail("Failed to retrieve object history for fedora-system:FedoraObject-3.0. Instead got: ".$obj_hist);
+        $this->fail("Failed to retrieve object history for fedora-system:FedoraObject-3.0. Instead got: " . $obj_hist);
       }
     }
     else {
@@ -101,10 +101,10 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         'dsLabel' => 'hipig', 'dsState' => 'A', 'mimeType' => 'image/png'));
 
     if ($data->code == 201) {
-      $this->pass('Add managed datastream test successful: '.$data->error);
+      $this->pass('Add managed datastream test successful: ' . $data->error);
     }
     else {
-      $this->fail('Problem running testaddDatastream: '.$data->error);
+      $this->fail('Problem running testaddDatastream: ' . $data->error);
     }
 
     $test_file_DSID = $this->randomName(11);
@@ -115,7 +115,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
       $this->pass('Add managed datastream from file test successful: ');
     }
     else {
-      $this->fail('Problem running testaddDatastream for file: '.$file_add_data->error);
+      $this->fail('Problem running testaddDatastream for file: ' . $file_add_data->error);
     }
 
     // Now try and modify that datastream and replace its contents with another image.
@@ -125,7 +125,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
       $this->pass('Modify managed datastream from file: ');
     }
     else {
-      $this->fail('Modify managed datastream from file: '.$file_modify_data->error);
+      $this->fail('Modify managed datastream from file: ' . $file_modify_data->error);
     }
     
     $test_export = $api->export($new_item->pid);
@@ -134,11 +134,11 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass("Successfully exported FOXML.");
       }
       else {
-        $this->fail('Problem running export command, got: '.$test_export->data);
+        $this->fail('Problem running export command, got: ' . $test_export->data);
       }
     }
     else {
-      $this->fail('Problem executing drupal_http_request for fedora_export: '.$test_export->error);
+      $this->fail('Problem executing drupal_http_request for fedora_export: ' . $test_export->error);
     }
 
     $test_nextPID = $api->getNextPID();
@@ -147,11 +147,11 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass('Successfully called getNextPID.');
       }
       else {
-        $this->fail('Problem calling getNextPID: '.$test_nextPID->data);
+        $this->fail('Problem calling getNextPID: ' . $test_nextPID->data);
       }
     }
     else {
-      $this->fail('Problem executing drupal_http_request for getNextPID: '.$test_nextPID->error);
+      $this->fail('Problem executing drupal_http_request for getNextPID: ' . $test_nextPID->error);
     }
 
     $test_objectXML = $api->getObjectXML($new_item->pid);
@@ -160,11 +160,11 @@ class FedoraAPITestCase extends DrupalWebTestCase {
         $this->pass('Successfully called getObjectXML.');
       }
       else {
-        $this->fail('Problem calling getObjectXML. Got: '.$test_objectXML->data);
+        $this->fail('Problem calling getObjectXML. Got: ' . $test_objectXML->data);
       }
     }
     else {
-      $this->fail('Problem calling drupal_http_request: '.$test_objectXML->error);
+      $this->fail('Problem calling drupal_http_request: ' . $test_objectXML->error);
     }
   }
 
@@ -242,7 +242,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
       $this->pidslist[] = $blank_item->pid;
     }
     catch (HttpException $e) {
-      $this->fail("Ingest blank object ".$e->getMessage(), 'FedoraClient');
+      $this->fail("Ingest blank object " . $e->getMessage(), 'FedoraClient');
     }
     // Attempt to ingest new object with existing pid, should raise an exception.
     if (!empty($blank_item)) {
