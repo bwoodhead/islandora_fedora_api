@@ -30,7 +30,7 @@ class FedoraRepository {
     }
 
     $this->connection = $connection;
-    $this->api = new FedoraAPI($this->connection);
+    $this->api = new FedoraAPIA($this->connection);
   }
 
   /**
