@@ -45,7 +45,7 @@ class FedoraObject extends PropertyObject {
     }
     else {
       // Make a default client using Drupal's variables.
-      $this->client = new FedoraClient();
+      $this->client = new FedoraRepository();
     }
     $this->pid = $pid;
     if (isset(FedoraItem::$instantiated_pids[$pid])) {
