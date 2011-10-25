@@ -39,7 +39,7 @@ function fedora_api_form_islandora_admin_settings_alter(&$form, &$form_state, $f
       'callback' => 'fedora_api_check_url_callback',
       'wrapper' => 'check-url-div',
       'effect' => 'none',
-      'progress' => array('type' => 'throbber', 'message' => '',),
+      'progress' => array('type' => 'throbber', 'message' => '', ),
     ),
   );
 
