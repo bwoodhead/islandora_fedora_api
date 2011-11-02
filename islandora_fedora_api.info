@@ -3,12 +3,12 @@ description = Wrapper for the Fedora Commons Repository REST API.
 package = Islandora
 version = 12.0.0
 core = 7.x
-files[] = FedoraAPIObjectNotFoundException.inc 
-files[] = FedoraAPIRestException.inc
+files[] = api/error/FedoraAPIObjectNotFoundException.inc 
+files[] = api/error/FedoraAPIRestException.inc
 
-files[] = FedoraAPIA.inc
-files[] = FedoraAPIM.inc
-files[] = FedoraAPIUtils.inc
+files[] = api/impl/FedoraAPIA.inc
+files[] = api/impl/FedoraAPIM.inc
+files[] = api/impl/FedoraAPIUtils.inc
 
 files[] = api/FedoraConnection.inc 
 files[] = api/FedoraRepository.inc 
