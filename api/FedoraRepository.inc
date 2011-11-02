@@ -30,7 +30,8 @@ class FedoraRepository {
     }
 
     $this->connection = $connection;
-    $this->api = new FedoraAPIA($this->connection);
+    $this->apia = new FedoraAPIA($this->connection);
+    $this->apim = new FedoraAPIM($this->connection);
   }
 
   /**
@@ -62,7 +63,7 @@ class FedoraRepository {
     )
   ){
 
-    $response = $this->api->ingest(
+    $response = $this->apim->ingest(
       $foxml_file, $foxml_string,
       !empty($options['pid']) ? $options['pid'] : NULL,
       !empty($options['new']) ? $options['new'] : NULL,
@@ -96,7 +97,7 @@ class FedoraRepository {
     if (!in_array('pid', $display_fields)) {
       $display_fields[] = 'pid';
     }
-    $resp = $this->api->findObjects($terms, $query, $max_results, 'xml', $display_fields);
+    $resp = $this->apia->findObjects($terms, $query, $max_results, 'xml', $display_fields);
     if ($resp->code != 200) {
       throw new FedoraRestException($resp->error);
     }
