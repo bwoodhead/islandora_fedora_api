@@ -7,6 +7,7 @@ core = 6.x
 files[] = islandora_fedora_api.raw.inc
 files[] = fedora_api.exception.inc
 files[] = fedora_api.connection.inc
+files[] = fedora_api.test
 
 ;files[] = fedora_api.exception.php
 ;files[] = fedora_api.client.inc
