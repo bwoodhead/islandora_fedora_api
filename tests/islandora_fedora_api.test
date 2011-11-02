@@ -41,7 +41,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
     global $base_url;
     
     echo( drupal_get_path('module', islandora_fedora_api));
-    //module_load_include('.inc', 'islandora_fedora_api', 'api/impl/FedoraAPIA');
+    module_load_include('.inc', 'islandora_fedora_api', 'api/impl/FedoraAPIA');
     
     $api = new FedoraAPIA();
     $client = new FedoraClient();

@@ -18,4 +18,4 @@ files[] = api/FoxmlForm.inc
 files[] = api/FedoraObject.inc     
 files[] = api/PropertyObject.inc
 
-files[] = tests/fedora_api.test
+files[] = tests/islandora_fedora_api.test
