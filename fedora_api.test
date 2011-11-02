@@ -17,6 +17,8 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   }
 
   function setUp() {
+    
+    // Call the parent setup
     parent::setUp('fedora_api');  
 
     // Create and login user.

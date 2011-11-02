@@ -12,3 +12,4 @@ files[] = islandora_fedora_api.module
 files[] = islandora_fedora_api.object.inc
 files[] = islandora_fedora_api.raw.inc
 files[] = islandora_fedora_api.repository.inc
+files[] = fedora_api.test
