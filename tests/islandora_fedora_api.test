@@ -19,7 +19,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   function setUp() {
     
     // Call the parent setup
-    parent::setUp('fedora_api');  
+    parent::setUp('islandora_fedora_api');  
 
     // Create and login user.
     $this->privileged_user = $this->drupalCreateFedoraUser();
@@ -33,11 +33,15 @@ class FedoraAPITestCase extends DrupalWebTestCase {
     variable_set('fedora_password', 'fedoraAdmin');
   }
 
+  /**
+   * @global type $base_url 
+   */
   public function testAPIA() {
     
     global $base_url;
     
-    //FedoraRepository
+    module_load_include('inc', 'islandora_fedora_api', 'api/impl/FedoraAPIA');
+    
     $api = new FedoraAPIA();
     $client = new FedoraClient();
     
