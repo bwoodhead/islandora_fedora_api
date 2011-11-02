@@ -247,7 +247,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   public function testFedoraClient() {
     // Test ingest
     global $base_url;
-    $client = new FedoraClient();
+    $client = new FedoraRepository();
     
     try {
       $blank_item = $client->ingest();
@@ -291,7 +291,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   
   public function testFedoraDatastream() {
     global $base_url;
-    $client = new FedoraClient();
+    $client = new FedoraRepository();
     module_load_include('inc', 'fedora_api', 'fedora_api.datastream');
     $item = $client->ingest();
     
@@ -350,7 +350,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   public function testFedoraItem() {
     global $base_url;
     
-    $client = new FedoraClient();
+    $client = new FedoraRepository();
     $item = $client->ingest();
     $this->pidslist[] = $item->pid;
     $this->assertEqual($item->pid, $item->pid, "Instantiate FedoraItem Object $item->pid", 'FedoraItem');
