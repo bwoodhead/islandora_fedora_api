@@ -184,7 +184,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   public function testAPIM() {
     // Create a new object with no pid or any other parameters specified.
     // Should return with the PID, and only contain the default 'DC' datastream.
-    $api = new FedoraAPI();
+    $api = new FedoraAPIM();
     
     $resp_blank_pid = $api->ingest();
     
@@ -429,7 +429,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   }
   
   protected function tearDown() {
-    $api = new FedoraAPI();
+    $api = new FedoraAPIM();
     foreach ($this->pidslist as $pid) {
       $api->purgeObject($pid, "Drupal SimpleTest cleanup");
     }
