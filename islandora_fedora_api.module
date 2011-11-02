@@ -14,6 +14,7 @@
  *
  * @todo Implement namespace restrictions.
  * @todo Make sure we save a value for islandora_repository_title
+ * @todo Shouldn't this be implemented using module_invoke_all instead of for alter
  */
 function fedora_api_form_islandora_admin_settings_alter(&$form, &$form_state, $form_id) {
 

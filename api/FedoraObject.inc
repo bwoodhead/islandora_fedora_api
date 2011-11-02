@@ -44,6 +44,8 @@ class FedoraObject extends PropertyObject {
       $this->client = $client;
     }
     else {
+      module_load_include('repository.inc', 'islandora_fedora_api');
+      
       // Make a default client using Drupal's variables.
       $this->client = new FedoraRepository();
     }

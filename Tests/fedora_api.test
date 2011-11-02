@@ -34,19 +34,24 @@ class FedoraAPITestCase extends DrupalWebTestCase {
   }
 
   public function testAPIA() {
+    
     global $base_url;
-      $api = new FedoraAPIA();
-      $client = new FedoraClient();
-
-      $profile = $api->getObjectProfile('islandora:demos');
+    
+    //FedoraRepository
+    $api = new FedoraAPIA();
+    $client = new FedoraClient();
+    
+    $profile = $api->getObjectProfile('islandora:demos');
     
     if (empty($profile->error)) {
       $this->pass('Fedora API-A getObjectProfile passed.');
     }
+    
     $dslist = $api->listDatastreams('islandora:demos');
     if (empty($dslist->error)) {
       $this->pass('Fedora API-A listDatastreams passed.');
     }
+    
     $methodlist = $api->listMethods('islandora:demos');
     if (empty($methodlist->error)) {
       $this->pass('Fedora API-A listMethods passed.');
@@ -56,6 +61,7 @@ class FedoraAPITestCase extends DrupalWebTestCase {
     if (empty($find_results->error)) {
       $this->pass('Fedora API-A findObjects passed.');
     }
+    
     $dc_stream = $api->getDatastreamDissemination("fedora-system:FedoraObject-3.0", "DC", '', 'false');
     if (empty($dc_stream->error)) {
       if (strpos($dc_stream->data, '<oai_dc:dc') >= 0) {
