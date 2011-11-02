@@ -86,9 +86,8 @@ class FedoraAPIA {
    *   </result>
    * @endcode
    */
-  public function findObjects($terms = '', $query = '', $maxResults = '', 
-    $resultFormat = 'xml', $displayFields = array('pid', 'title')
-  ){
+  public function findObjects($terms = '', $query = '', $maxResults = '', $resultFormat = 'xml', $displayFields = array('pid', 'title')
+  ) {
     $fedora_url = $this->connection->requestURL();
     $request = "$fedora_url/objects?";
 
@@ -137,17 +136,17 @@ class FedoraAPIA {
    */
   public function getDatastreamDissemination($pid, $dsID, $asOfDateTime = NULL, $download = NULL) {
     $pid = drupal_encode_path($pid);
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
     $request = "$fedora_url/objects/$pid/datastreams/$dsID/content";
-    $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
+    $request .= ( !empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
     if (!empty($download)) {
-      $request .= (!empty($asOfDateTime) ? '&' : '?');
+      $request .= ( !empty($asOfDateTime) ? '&' : '?');
       $request .= "download=$download";
     }
 
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
@@ -172,7 +171,7 @@ class FedoraAPIA {
     $pid = drupal_encode_path($pid);
     $sdefPid = drupal_encode_path($sdefPid);
 
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
     $request = "$fedora_url/objects/$pid/methods/$sdefPid/$method?";
 
     //$request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
@@ -182,7 +181,7 @@ class FedoraAPIA {
 
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
@@ -210,12 +209,12 @@ class FedoraAPIA {
    */
   public function getObjectHistory($pid, $format = 'xml') {
     $pid = drupal_encode_path($pid);
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
 
     $request = "$fedora_url/objects/$pid/versions?format=$format";
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
@@ -260,13 +259,13 @@ class FedoraAPIA {
    */
   public function getObjectProfile($pid, $format = 'xml', $asOfDateTime = '') {
     $pid = drupal_encode_path($pid);
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
 
     $request = "$fedora_url/objects/$pid?format=$format";
-    $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
+    $request .= ( !empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
@@ -299,13 +298,13 @@ class FedoraAPIA {
    */
   public function listDatastreams($pid, $format = 'xml', $asOfDateTime = '') {
     $pid = drupal_encode_path($pid);
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
 
     $request = "$fedora_url/objects/$pid/datastreams?format=$format";
-    $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
+    $request .= ( !empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
@@ -342,20 +341,21 @@ class FedoraAPIA {
    */
   public function listMethods($pid, $sdefPid = '', $format = 'xml', $asOfDateTime = '') {
     $pid = drupal_encode_path($pid);
-    $fedora_url = $this->connection->requestURL(); 
+    $fedora_url = $this->connection->requestURL();
 
     $request = "$fedora_url/objects/$pid/methods";
-    $request .= (!empty($sdefPid) ? "/$sdefPid" : '');
+    $request .= ( !empty($sdefPid) ? "/$sdefPid" : '');
     $request .= "?format=$format";
-    $request .= (!empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
+    $request .= ( !empty($asOfDateTime) ? "&asOfDateTime=$asOfDateTime" : '');
     $response = drupal_http_request($request);
 
-    if(!FedoraAPIUtils::testSuccess($response)) {
+    if (!FedoraAPIUtils::testSuccess($response)) {
       throw new FedoraApiRestException($response);
     }
 
     return $response;
   }
+
 }
 
 ?>
